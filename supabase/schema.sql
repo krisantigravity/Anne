@@ -32,16 +32,16 @@ DROP POLICY IF EXISTS "owner_update" ON public.media_items;
 DROP POLICY IF EXISTS "owner_delete" ON public.media_items;
 
 CREATE POLICY "owner_select" ON public.media_items
-  FOR SELECT USING (auth.uid() = user_id);
+  FOR SELECT USING (auth.role() = 'authenticated');
 
 CREATE POLICY "owner_insert" ON public.media_items
-  FOR INSERT WITH CHECK (auth.uid() = user_id);
+  FOR INSERT WITH CHECK (auth.role() = 'authenticated');
 
 CREATE POLICY "owner_update" ON public.media_items
-  FOR UPDATE USING (auth.uid() = user_id);
+  FOR UPDATE USING (auth.role() = 'authenticated');
 
 CREATE POLICY "owner_delete" ON public.media_items
-  FOR DELETE USING (auth.uid() = user_id);
+  FOR DELETE USING (auth.role() = 'authenticated');
 
 -- ── 3. STORAGE BUCKET ─────────────────────────────────────────
 -- Create private 'vault' bucket (5 GB per file max)
@@ -57,19 +57,19 @@ DROP POLICY IF EXISTS "vault_delete"  ON storage.objects;
 CREATE POLICY "vault_upload" ON storage.objects
   FOR INSERT WITH CHECK (
     bucket_id = 'vault'
-    AND auth.uid()::text = (string_to_array(name, '/'))[1]
+    AND auth.role() = 'authenticated'
   );
 
 CREATE POLICY "vault_select" ON storage.objects
   FOR SELECT USING (
     bucket_id = 'vault'
-    AND auth.uid()::text = (string_to_array(name, '/'))[1]
+    AND auth.role() = 'authenticated'
   );
 
 CREATE POLICY "vault_delete" ON storage.objects
   FOR DELETE USING (
     bucket_id = 'vault'
-    AND auth.uid()::text = (string_to_array(name, '/'))[1]
+    AND auth.role() = 'authenticated'
   );
 
 -- ── 4. AUTO-CONFIRM USERS (No email confirmation needed) ─────
