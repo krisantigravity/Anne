@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js'
 
-const DEFAULT_URL = 'https://your-project.supabase.co'
-const DEFAULT_KEY = 'your-anon-key'
+const DEFAULT_URL = 'https://viiruwsotafgyicgtqxo.supabase.co'
+const DEFAULT_KEY = 'sb_publishable_mK2aWox8Of82x_B1mYxyEw_zEHvdveS'
 
 const supabaseUrl = (import.meta.env.VITE_SUPABASE_URL || DEFAULT_URL) as string
 const supabaseKey = (import.meta.env.VITE_SUPABASE_ANON_KEY || DEFAULT_KEY) as string
@@ -15,7 +15,7 @@ export const supabase = createClient(supabaseUrl, supabaseKey, {
   },
 })
 
-export const isSupabaseConfigured = false
+export const isSupabaseConfigured = true
 
 // ── Storage helpers ──────────────────────────────────────────
 
